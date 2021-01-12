@@ -13,7 +13,7 @@ int main()
 
 // Takes a number and index position
 // Clears the bit on the position in the number
-// Returns the changed number 
+// Returns the changed number
 int clearBitOn(int num, int pos)
 {
     int mask = 1 << pos;

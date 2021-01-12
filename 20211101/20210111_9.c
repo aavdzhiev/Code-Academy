@@ -6,8 +6,8 @@
 int main()
 {
     unsigned int mask = 0xFFFFFF8F;
-    
-    unsigned int num = 0b01110001;
+
+    unsigned int num = 0b1110001;
     unsigned int num2 = 0b11111111111111111;
 
     unsigned int result = mask & num;

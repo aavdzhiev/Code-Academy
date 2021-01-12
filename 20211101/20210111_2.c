@@ -12,10 +12,10 @@ int main()
     printf("%d", result);
 }
 
-int bitOn(int num, int ind) {
+int bitOn(int num, int ind)
+{
     unsigned mask = 1;
 
     num = num >> ind;
     num = mask & num;
-
 }

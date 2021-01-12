@@ -9,12 +9,13 @@ int reverseBitOn(int n, int pos);
 
 int main()
 {
-    printf("%d", reverseBitOn(8,0));
+    printf("%d", reverseBitOn(8, 0));
 
     return 0;
 }
 
-int reverseBitOn(int n, int pos) {
+int reverseBitOn(int n, int pos)
+{
     int mask = 1 << pos;
     n ^= mask;
 

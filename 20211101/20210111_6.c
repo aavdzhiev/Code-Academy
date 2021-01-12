@@ -5,8 +5,8 @@
 
 int main()
 {
-    unsigned int n = 6;
-    unsigned int position = 0;
+    int n = 6;
+    int position = 0;
     int mask = 1 << position;
     n ^= mask;
 

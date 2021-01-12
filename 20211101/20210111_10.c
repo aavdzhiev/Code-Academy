@@ -6,10 +6,10 @@ unsigned int removeAfterNth(unsigned int a, unsigned int n);
 
 int main()
 {
-    unsigned int a = 64;
+    unsigned int number = 0xFFFFFFFF;
     unsigned int n = 7;
 
-    printf("%u", removeAfterNth(a, n));
+    printf("%u", removeAfterNth(number, n));
 
     return 0;
 }
@@ -23,5 +23,4 @@ unsigned int removeAfterNth(unsigned int number, unsigned int n)
     unsigned int result = number & mask;
 
     return result;
-
 }

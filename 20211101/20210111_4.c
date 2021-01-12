@@ -9,12 +9,13 @@ int turnBitOn(int a, int pos);
 
 int main()
 {
-    printf("%d", turnBitOn(3,2));
+    printf("%d", turnBitOn(3, 2));
 
     return 0;
 }
 
-int turnBitOn(int a, int pos) {
+int turnBitOn(int a, int pos)
+{
     int mask = 1 << pos;
     a |= mask;
 

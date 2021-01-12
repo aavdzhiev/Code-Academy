@@ -1,6 +1,7 @@
-#include<stdio.h>
+#include <stdio.h>
 
-int main() {
+int main()
+{
     int a = 3;
     int b = 5;
 
@@ -11,5 +12,4 @@ int main() {
     printf("Bitwise AND result: %d\n", andRes);
     printf("Bitwsie OR result: %d\n", orRes);
     printf("Bitwsie XOR result: %d\n", xorRes);
-
 }

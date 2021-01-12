@@ -7,7 +7,7 @@ unsigned int clearEvenBits(unsigned int n);
 
 int main()
 {
-    int num = 255;
+    unsigned int num = 255;
     printf("%u\n", clearEvenBits(num));
 
     return 0;
