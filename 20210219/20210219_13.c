@@ -17,28 +17,32 @@ struct employee
 	char surname[MAXBUF];
 	char position[MAXBUF];
 	int workExp;
+	double salary;
 	struct employee *superior;
 };
 
-// struct employee createEmployee(int id, char  *name, char surname[], char *position, int workExp, struct employee superior) {
-// 	struct employee temp;
-
-// 	temp.id = id;
-// 	temp.name = name;
-// 	temp.workExp = workExp;
-// }
+struct employee createEmployee(int id, const char *name, const char *surname, const char *position, int workExp) {
+	struct employee temp;
+	temp.id = id;
+	strcpy(temp.name, name);
+	strcpy(temp.surname, surname);
+	strcpy(temp.position, position);
+	temp.workExp = workExp;
+	double salary;
+}
 
 
 struct employee * createEmployee(int n) {
-	int i;
-	char name[MAXBUF];
-	static struct employee r[] = NULL;
+	int i, id, workExp;
+	double salary;
+	char name[MAXBUF], surname[MAXBUF], position[MAXBUF];
+
+	static struct employee r[10];
 
 	for (i = 0; i < n; i++) {
 		printf("Enter employee name: ");
 		scanf("%s", &name);
-		r[i] = struct employee petar;
-		
+		r[i] =	createEmployee();
 	}
 
 	return r;
