@@ -15,7 +15,7 @@ int main(void) {
 
 	/* define and initialize the points */
 	struct point a = {3, 4};
-	struct point b = {0, 10};
+	struct point b = {3, 10};
 	struct point c = {7, 10};
 
 	/* create a 15x15 field and print it */
@@ -34,18 +34,14 @@ int main(void) {
 	board[c.y][c.x] = 'c';
 	print_board(board);
 
-	/* struct point a = {3, 4};
-	struct point b = {0, 10};
-	struct point c = {7, 10}; */
-
 	/* connect the dots so it becomes a triangle and print */
 	j = a.x;
 	for (i = a.y; i <= c.y; i++)
 	{
-		for (k = a.x; k < j;)
+		for (k = a.x; k <= j ; k++)
 		{
 			board[i][k] = '@';
-			k++;
+			
 		}
 		j++;
 	}
