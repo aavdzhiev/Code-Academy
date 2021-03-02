@@ -134,11 +134,19 @@ int main(void)
 		printWaterMelon(waterPumpkin[i]);
 	}
 
-	avgDiameterB = average(waterMelons, B, diameter);
+	avgDiameterB = average(waterPumpkin, B, diameter);
 	printf("Average sum of diameter of sort pumpkin: %.2lf\n", avgDiameterB);
-	avgBarkB = average(waterMelons, B, bark);
+	avgBarkB = average(waterPumpkin, B, bark);
 	printf("Average sum of bark of sort pumpkin: %.2lf\n\n", avgBarkB);
 
+	if(avgDiameterA > avgDiameterB) {
+		printf("It's better to buy melons with diameter %.2lfcm and peel %.2lfcm\n", avgDiameterA, avgBarkA);
+		
+	} else if (avgDiameterB > avgDiameterA) {
+		printf("It's better to buy pumpkin melons with diameter %.2lfcm and peel %.2lfcm\n", avgDiameterB, avgBarkB);
+	} else {
+		(avgBarkA >= avgBarkB) ? printf("It's better to buy melons with diameter %.2lfcm and peel %.2lfcm\n", avgDiameterB), avgBarkB : printf("It's better to buy melons with diameter %.2lfcm and peel %.2lfcm\n", avgDiameterA, avgBarkA);
+	}
 	
 
 	for (i = 0; i < A; i++)
