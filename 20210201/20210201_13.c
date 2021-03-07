@@ -16,10 +16,13 @@ int main(void)
 }
 
 void lower(char *s) {
+	char *begin = s;
 	while (*s != '\0') {
 		if (*s >= 65 && *s <= 90) {
 			*s = *s+ 32;
 		}
 		s++;
 	}
+	
+	s = begin;
 }
