@@ -8,7 +8,7 @@ int lcm(int a, int b) {
         }
     }
 
-    return a * b / gcd;
+    return (a * b) / gcd;
 }
 
 float modulo(float n) {
