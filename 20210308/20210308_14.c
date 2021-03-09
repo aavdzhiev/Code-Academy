@@ -6,14 +6,15 @@
 име. Отпечатайте съдържанието на файл на
 стандартния изход с главни букви. */
 #include <stdio.h>
+#include <stdlib.h>
 
 void print_file(char *filename);
 
 int main(int argc, char *argv[])
 {
-
+	int c;
 	FILE *fp_in, *fp_out;
-	char *fnm_old, *fnm_new;
+	char *fnm_old = "upper.txt", *fnm_new = "tmp.txt";
 
 	if (argc < 3)
 	{
@@ -21,10 +22,34 @@ int main(int argc, char *argv[])
 			   argv[0]);
 	}
 	else {
-		
-	}
+		fp_in = fopen(fnm_old, "r");
+		fp_out = fopen(fnm_new, "w+");
 
-	print_file(argv[2]);
+		if(NULL == fp_in || NULL == fp_out) {
+			printf("Unable to open file.\n");
+			exit(1);
+		}
+
+		do {
+			c = fgetc(fp_in);
+
+			if (c >= 97 && c <= 122) {
+				c -= 32;
+			}
+
+			fputc(c, fp_out);
+
+		} while (!feof(fp_in));
+	}
+	
+	fclose(fp_in);
+	fclose(fp_out);
+
+	remove(fnm_old);
+
+	rename(fnm_new, fnm_old);
+	print_file(fnm_old);
+
 
 	return 0;
 }
