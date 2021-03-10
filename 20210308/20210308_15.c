@@ -11,7 +11,7 @@ long count_characters(FILE *);
  
 void main(int argc, char * argv[])
 {
-    long i= 0;
+    long i = 0;
     long cnt;
     char ch, ch1;
     FILE *fp1, *fp2;
@@ -28,7 +28,6 @@ void main(int argc, char * argv[])
         {
             ch = fgetc(fp1);
             fputc(ch, fp2);
-            // fseek(fp1, cnt, SEEK_SET);
 	        fseek(fp1, -i, 2);
 			i++;
             cnt--;

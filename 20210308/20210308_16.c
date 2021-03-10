@@ -24,11 +24,11 @@ void remove_line(char *source, char *dest, int line)
 
 	do
 	{
+		c = fgetc(fp_in);
 		if (feof(fp_in))
 		{
 			break;
 		}
-		c = fgetc(fp_in);
 		if (c == '\n')
 		{
 			l++;

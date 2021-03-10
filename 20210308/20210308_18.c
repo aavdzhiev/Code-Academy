@@ -7,8 +7,10 @@ char gender;
 }t_person;
  в XML формат по показания в лекцията начин. */
 #include <stdio.h>
+static const char *XML_FORMAT_PERSON_IN = "<person>\n<name>%[^<]</name>\n<age>%d</age>\n<gender>%c</gender>\n</person>\n";
 static const char *XML_FORMAT_PERSON_OUT = "<person>\n\t\t<name>%s</name>\n\t\t<age>%d</age>\n\t\t<gender>%c</gender>\n</person>";
-static const char *XML_FORMAT_PERSON_IN = "<person>\n\t\t<name>%s/name>\n\t\t<age>%d</age>\n\t\t<gender>%c</gender>\n</person>";
+
+
 
 
 typedef struct Person{
