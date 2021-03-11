@@ -70,14 +70,13 @@ int check_brackets(const char *filename, Stack *st)
 				exit(1);
 			}
 		}
+		else
+		{
+			printf("Parantheses on line %d are not valid\n", line);
+			exit(1);
+		}
 
 	} while (1);
-
-	if (!isEmpty(st))
-	{
-		printf("Parantheses on line %d are not valid\n", line);
-		exit(1);
-	}
 
 	printf("There were no errors found.\n");
 	return 1;
