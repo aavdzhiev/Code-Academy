@@ -3,45 +3,84 @@
 Хвърлете грешка при липса на затварящи скоби и реда на който са. */
 #include <stdio.h>
 #include <stdlib.h>
+#include "libstack.h"
 
-int check_brackets(const char *filename);
-int srch_sym(FILE *fp, char sym);
+/* Използвал съм stack, за да съхранявам в случай, че има отварящи скоби. Инклуднал съм libstack.h, където са прототипите на struct Stack и функциите. Функциите се намират в stack.c в същата папка.*/
 
-int main(int argc, char **argv) {
-	
-	if (argc < 2) {
+int check_brackets(const char *filename, Stack *st);
+
+int main(int argc, char **argv)
+{
+	Stack *brackets = newStack(100); /* create a stack to contain the last open parantheses */
+
+	if (argc < 2)
+	{
 		printf("Usage:\n\t%s file.txt\n", argv[0]);
 		exit(0);
 	}
 
+	check_brackets(argv[1], brackets);
+
 	return 0;
 }
 
-int check_brackets(const char *filename) {
-	char c, cl;
+int check_brackets(const char *filename, Stack *st)
+{
+	char c, top;
+	int line = 1;
 	FILE *fp;
 
 	fp = fopen(filename, "r");
-	if(fp == NULL)
-    {
-        printf("File does not exist\n");
-        return -1;
-    }
+	if (fp == NULL)
+	{
+		printf("File does not exist\n");
+		return -1;
+	}
 
-	do {
+	do
+	{
 		c = fgetc(fp);
-		if (c == '(' ) {
+		if (c == EOF)
+			break;
 
-			
+		if (c == '\n')
+			line++;
+
+		if (c == '(' || c == '{' || c == '[')
+		{
+			push(st, c);
 		}
+
+		if (isEmpty(st))
+		{
+			continue;
+		}
+		else if (c == ')' || c == '}' || c == ']')
+		{
+			top = peek(st);
+			if (c == ')' && top == '(' ||
+				c == '}' && top == '{' ||
+				c == ']' && top == '[')
+			{
+				pop(st);
+			}
+			else
+			{
+				printf("Parantheses on line %d are not valid\n", line);
+				exit(1);
+			}
+		}
+
+	} while (1);
+
+	if (!isEmpty(st))
+	{
+		printf("Parantheses on line %d are not valid\n", line);
+		exit(1);
 	}
 
+	printf("There were no errors found.\n");
+	return 1;
 
-}
-
-int srch_sym(FILE *fp, char sym) {
-	char c;
-	while (c = getc(fp) != '\n') {
-
-	}
+	fclose(fp);
 }
