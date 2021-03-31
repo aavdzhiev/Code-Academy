@@ -1,5 +1,6 @@
 #include "mymalloc.h"
 
+/* Calculates the milliseconds since the start of the program */
 long ms_from_beginning(void)
 {
   long ms;
@@ -8,13 +9,14 @@ long ms_from_beginning(void)
 
   clock_gettime(CLOCK_REALTIME, &now);
 
-  sec = now.tv_sec - begin.tv_sec;         /* calculate seconds diff */
-  nano = now.tv_nsec - begin.tv_nsec;      /* calculate nanoseconds diff */
+  sec = now.tv_sec - begin.tv_sec;         /* Calculate seconds diff */
+  nano = now.tv_nsec - begin.tv_nsec;      /* Calculate nanoseconds diff */
   ms = (sec * 1000) + round(nano / 1.0e6); /* Convert nanoseconds to milliseconds */
 
   return ms;
 }
 
+/* Initialises the free list variable */
 void initialize()
 {
   free_list->size = MAX_SIZE - sizeof(block_t);
@@ -22,6 +24,7 @@ void initialize()
   free_list->next = NULL;
 }
 
+/* Takes a memory block as param and splits it to the requested size */
 void split(block_t *block, size_t requested_size)
 {
   block_t *new = (void *)((void *)block + requested_size + sizeof(block_t));
@@ -35,27 +38,32 @@ void split(block_t *block, size_t requested_size)
   block->free = 0;
   block->allocated_at = ms_from_beginning();
 }
-void write_log(const char *fname, void *param, enum type t)
+
+/* Merges two consecutive memory blocks if they are free */
+void merge()
 {
-  fp = fopen(LOG_NAME, "a+");
-  long time = ms_from_beginning();
+  block_t *cur;
+  cur = free_list;
 
-  if (t == INT)
+  while (cur != NULL && cur->next != NULL)
   {
-    fprintf(fp, "called %s at %ld ms with param %d\n", fname, time, (*(int *)param));
-  }
-  else if (t == PTR)
-  {
-    fprintf(fp, "called %s at %ld ms with param %p\n", fname, time, param);
-  }
+    if (cur->free && cur->next->free)
+    {
+      cur->size += cur->next->size + sizeof(block_t);
+      block_t *deleted = cur->next;
+      cur->next = cur->next->next;
+      deleted = NULL;
+    }
 
-  fclose(fp);
+    cur = cur->next;
+  }
 }
 
+/* Takes size_t and allocates this much 'memory'. Returns void * or NULL if fails to allocate space */
 void *my_malloc(size_t requested_size)
 {
   write_log(__func__, &requested_size, INT);
-  if (!free_list->size)
+  if (!free_list->size) /* initialize the memory if freelist->size == 0 */
   {
     initialize();
   }
@@ -63,6 +71,7 @@ void *my_malloc(size_t requested_size)
   block_t *current = free_list;
   void *result;
 
+  /* Iterate through the list until we find a suitable block large enough and free */
   while ((current->size < requested_size || current->free == 0) && current->next != NULL)
   {
     current = current->next;
@@ -87,28 +96,21 @@ void *my_malloc(size_t requested_size)
   return result;
 }
 
-void merge()
+void *my_realloc(void *p, size_t requested_size)
 {
-  block_t *cur;
-  cur = free_list;
+  write_log(__func__, &requested_size, INT);
+  void *new_ptr = my_malloc(requested_size);
+  my_free(p);
+  memcpy(new_ptr, p, requested_size);
 
-  while (cur != NULL && cur->next != NULL)
-  {
-    if (cur->free && cur->next->free)
-    {
-      cur->size += cur->next->size + sizeof(block_t);
-      block_t *deleted = cur->next;
-      cur->next = cur->next->next;
-      deleted = NULL;
-    }
-
-    cur = cur->next;
-  }
+  return new_ptr;
 }
 
+/* Frees 'memory' */
 void my_free(void *p)
 {
   write_log(__func__, p, PTR);
+  /* Check if the given pointer is within the memory adress */
   if (((void *)memory <= p) && (p <= (void *)(memory + MAX_SIZE)))
   {
     struct block *curr = p;
@@ -120,8 +122,10 @@ void my_free(void *p)
   }
 }
 
+/* Print a memory block's info */
 void print_memory(const block_t *blk)
 {
+  printf("\nMemory status: \n");
   do
   {
     printf("address: %p, size: %ld, free: %d, next: %p, allocated_at: %ld ms\n", blk, blk->size, blk->free, blk->next, blk->allocated_at);
@@ -129,6 +133,7 @@ void print_memory(const block_t *blk)
   } while (blk != NULL);
 }
 
+/* Iterate through the linked list and print the blocks that were not freed */
 void print_allocated(FILE *fp, const block_t *blk)
 {
   fp = fopen(LOG_NAME, "a+");
@@ -142,6 +147,24 @@ void print_allocated(FILE *fp, const block_t *blk)
     }
     blk = blk->next;
   } while (blk != NULL);
+
+  fclose(fp);
+}
+
+/* Write details about the funciton calls in the log */
+void write_log(const char *fname, void *param, enum type t)
+{
+  fp = fopen(LOG_NAME, "a+");
+  long time = ms_from_beginning();
+
+  if (t == INT)
+  {
+    fprintf(fp, "called %s at %ld ms with param %d\n", fname, time, (*(int *)param));
+  }
+  else if (t == PTR)
+  {
+    fprintf(fp, "called %s at %ld ms with param %p\n", fname, time, param);
+  }
 
   fclose(fp);
 }
